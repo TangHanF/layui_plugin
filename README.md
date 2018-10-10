@@ -18,7 +18,7 @@ LayUI扩展模块，持续增加中...
 ### 效果图
 ![](https://ws1.sinaimg.cn/large/006tNbRwly1fw2ur3xxrhj30uk0f20tu.jpg)
 
-###示例地址：[点此进入](https://tanghanf.github.io/layui_plugin/rightmenu_demo.html)
+### 示例地址：[点此进入](https://tanghanf.github.io/layui_plugin/rightmenu_demo.html)
 
 
 ### 调用说明
