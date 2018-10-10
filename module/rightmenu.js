@@ -95,7 +95,6 @@ layui.define(['element'], function (exports) {
             $(".rightmenu").hide();
         });
 
-
         /**
          * 注册tab右键菜单点击事件
          */
