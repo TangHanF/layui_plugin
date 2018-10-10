@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选项卡插件测试</title>
+    <link rel="stylesheet" href="assets/layui/css/layui.css" media="all">
+    <script src="assets/jquery-3.3.1.js"></script>
+
+    <script src="assets/layui/layui.js"></script>
+
+
+</head>
+<body>
+<!-- 内容主体区域 -->
+<div class="layui-body">
+    <!-- 顶部切换卡 -->
+    <div class="layui-tab" lay-filter="main-tab">
+        <ul class="layui-tab-title">
+            <li lay-id="0" class="layui-this">网站设置</li>
+            <li lay-id="1">用户管理</li>
+            <li lay-id="2">权限分配</li>
+            <li lay-id="3">商品管理</li>
+            <li lay-id="4">订单管理</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">内容1</div>
+            <div class="layui-tab-item">内容2</div>
+            <div class="layui-tab-item">内容3</div>
+            <div class="layui-tab-item">内容4</div>
+            <div class="layui-tab-item">内容5</div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    layui.config({
+        base:'module/',
+    }).use(['element', 'rightmenu'], function () {
+        let element = layui.element;
+        let rightmenu_ = layui.rightmenu;
+
+
+        rightmenu_.render();
+
+        //屏蔽Tab选项卡的右键
+        $('.layui-tab-title li').on('contextmenu', function () {
+            return false;
+        })
+
+
+    });
+
+
+</script>
+
+</body>
+</html>
