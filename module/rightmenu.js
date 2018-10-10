@@ -65,7 +65,7 @@ layui.define(['element'], function (exports) {
         $.each(rightMenuConfig, function (index, conf) {
             li += '<li data-type="' + conf.dataType + '">' + conf.title + '</li>';
         })
-        $(".layui-body").after('<ul class="rightmenu">' + li + '</ul>');
+        $(".nav-body").after('<ul class="rightmenu">' + li + '</ul>');
         _CustomRightClick();
     }
 
