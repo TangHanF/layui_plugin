@@ -88,14 +88,11 @@
         })
 
         function test(id, title,currentNavGroup, dom) {
-            // debugger
-            changeCurrentTabContent(currentNavGroup,"测试触发,触发的ID：" + id + "，标题：" + title);
-            console.log("测试触发,触发的ID：" + id + "，标题：" + title);
+            changeCurrentTabContent(currentNavGroup,"[测试]触发,触发的ID：" + id + "，标题：" + title);
         }
 
-        function test2(id, title, dom) {
-            changeCurrentTabContent(currentNavGroup,"测试触发,触发的ID：" + id + "，标题：" + title);
-            console.log("测试触发,触发的ID：" + id + "，标题：" + title);
+        function test2(id, title,currentNavGroup, dom) {
+            changeCurrentTabContent(currentNavGroup,"[测试2]触发,触发的ID：" + id + "，标题：" + title);
         }
 
         function changeCurrentTabContent(currentNavGroup,content) {
