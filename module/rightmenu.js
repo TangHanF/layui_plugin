@@ -7,39 +7,44 @@ layui.define(['element'], function (exports) {
         this.v = '1.0.0';
         this.author = 'TangHanF';
         this.email = 'guofu_gh@163.com';
-        this.rightmenuStyle = `
-            /**右键菜单*/
-            .rightmenu {
-                position: absolute;
-                width: 110px;
-                z-index: 9999;
-                display: none;
-                background-color: #fff;
-                padding: 2px;
-                color: #333;
-                border: 1px solid #eee;
-                border-radius: 2px;
-                cursor: pointer;
-            }
-    
-            .rightmenu li {
-                text-align: center;
-                display: block;
-                height: 30px;
-                line-height: 32px;
-            }
-    
-            .rightmenu li:hover {
-                background-color: #666;
-                color: #fff;
-            }
-        `
+        this.filter = '';//Tab选项卡的事件过滤
+
     };
+    String.prototype.format = function () {
+        if (arguments.length == 0) return this;
+        let param = arguments[0];
+        let s = this;
+        if (typeof(param) == 'object') {
+            for (var key in param) s = s.replace(new RegExp("\\{" + key + "\\}", "g"), param[key]);
+            return s;
+        } else {
+            for (var i = 0; i < arguments.length; i++) s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
+            return s;
+        }
+    }
+
+    function createStyle(ulClassName) {
+        let style = '.{name} {position: absolute;width: 110px;z-index: 9999;display: none;background-color: #fff;padding: 2px;color: #333;border: 1px solid #eee;border-radius: 2px;cursor: pointer;}.{name} li {text-align: center;display: block;height: 30px;line-height: 32px;}.{name} li:hover {background-color: #666;color: #fff;}'
+            .format({name: ulClassName});
+        return style;
+    }
 
     /**
      * 初始化
      */
     RIGHTMENUMOD.prototype.render = function (opt) {
+        createStyle();
+
+        if (!opt.container) {
+            console.error("[ERROR]使用rightmenu组件需要制定'container'属性！");
+            return;
+        }
+        if (!opt.filter) {
+            console.error("[ERROR]使用rightmenu组件需要制定'filter'属性！");
+            return;
+        }
+        this.filter = opt.filter;
+
         let defaultNavArr = [
             {dataType: 'closethis', title: '关闭当前'},
             {dataType: 'closeall', title: '关闭所有'},
@@ -50,7 +55,7 @@ layui.define(['element'], function (exports) {
         ];
         opt = opt || {};
         opt.navArr = opt.navArr || defaultNavArr;
-        CreateRightMenu(opt.navArr);
+        CreateRightMenu(opt);
     };
 
 
@@ -60,13 +65,15 @@ layui.define(['element'], function (exports) {
      * @constructor
      */
     function CreateRightMenu(rightMenuConfig) {
-        $("<style></style>").text(rightmenu.rightmenuStyle).appendTo($("head"));
+        // 使用"filter"属性作为css样式名称
+        $("<style></style>").text(createStyle(rightMenuConfig.filter)).appendTo($("head"));
         let li = '';
-        $.each(rightMenuConfig, function (index, conf) {
+        $.each(rightMenuConfig.navArr, function (index, conf) {
             li += '<li data-type="' + conf.dataType + '">' + conf.title + '</li>';
         })
-        $(".nav-body").after('<ul class="rightmenu">' + li + '</ul>');
-        _CustomRightClick();
+        let tmpHtml = '<ul class="{className}">{liStr} </ul>'.format({liStr: li, className: rightMenuConfig.filter})
+        $(rightMenuConfig.container).after(tmpHtml);
+        _CustomRightClick(rightMenuConfig);
     }
 
 
@@ -74,16 +81,18 @@ layui.define(['element'], function (exports) {
      * 绑定右键菜单
      * @constructor
      */
-    function _CustomRightClick() {
+    function _CustomRightClick(rightMenuConfig) {
+
         //屏蔽Tab右键
-        $('.layui-tab-title li').on('contextmenu', function () {
+        $("#" + rightmenuObj.filter + ' li').on('contextmenu', function () {
             return false;
         })
-        $('.layui-tab-title,.layui-tab-title li').click(function () {
-            $('.rightmenu').hide();
+        $('#' + rightmenuObj.filter + ',' + rightmenuObj.filter + ' li').click(function () {
+            $('.' + rightMenuConfig.filter).hide();
         });
-        $('.layui-tab-title li').on('contextmenu', function (e) {
-            let popupmenu = $(".rightmenu");
+        console.log("[事件绑定，元素]" + rightmenuObj.filter + ' li')
+        $("#" + rightmenuObj.filter + ' li').on('contextmenu', function (e) {
+            let popupmenu = $("." + rightMenuConfig.filter);
             let leftValue = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;
             let topValue = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
             popupmenu.css({left: leftValue, top: topValue}).show();
@@ -92,15 +101,17 @@ layui.define(['element'], function (exports) {
         // 点击空白处隐藏弹出菜单
         $(document).click(function (event) {
             event.stopPropagation();
-            $(".rightmenu").hide();
+            $("." + rightMenuConfig.filter).hide();
         });
+
 
         /**
          * 注册tab右键菜单点击事件
          */
-        $(".rightmenu li").click(function () {
-            let currentActiveTabID = $("li[class='layui-this']").attr('lay-id');// 获取当前激活的选项卡ID
-            let tabtitle = $(".layui-tab-title li");
+        console.log("[注册tab右键菜单点击事件]" + '.' + rightMenuConfig.filter + ' li');
+        $('.' + rightMenuConfig.filter + ' li').click(function () {
+            let currentActiveTabID = $("#" + rightMenuConfig.filter + ">li[class='layui-this']").attr('lay-id');// 获取当前激活的选项卡ID
+            let tabtitle = $("#" + rightMenuConfig.filter + " li");
             let allTabIDArr = [];
             $.each(tabtitle, function (i) {
                 allTabIDArr[i] = $(this).attr("lay-id");
@@ -109,16 +120,16 @@ layui.define(['element'], function (exports) {
             // 事件处理
             switch ($(this).attr("data-type")) {
                 case "closethis"://关闭当前，如果开始了tab可关闭，实际意义不大
-                    tabDelete(currentActiveTabID);
+                    tabDelete(currentActiveTabID, rightMenuConfig.filter);
                     break;
                 case "closeall"://关闭所有
-                    tabDeleteAll(allTabIDArr);
+                    tabDeleteAll(allTabIDArr, rightMenuConfig.filter);
                     break;
                 case "closeothers"://关闭非当前
                     $.each(allTabIDArr, function (i) {
                         let tmpTabID = allTabIDArr[i];
                         if (currentActiveTabID != tmpTabID)
-                            tabDelete(tmpTabID);
+                            tabDelete(tmpTabID, rightMenuConfig.filter);
                     })
                     break;
                 case "closeleft"://关闭左侧全部
@@ -135,20 +146,21 @@ layui.define(['element'], function (exports) {
                     refreshiFrame();
                     break;
                 default:
-                    $('.rightmenu').hide();
+                    let currentTitle = $("#" + rightMenuConfig.filter + ">li[class='layui-this']").text();
+                    rightMenuConfig.registMethod[$(this).attr("data-type")](currentActiveTabID, currentTitle,rightMenuConfig.container, $(this)[0]);
 
             }
             $('.rightmenu').hide();
         })
     }
 
-    let tabDelete = function (id) {
-        console.log("删除的TabID：" + id)
-        element.tabDelete("main-tab", id);//删除
+    let tabDelete = function (id, currentNav) {
+        console.log("删除的TabID：" + id + ",所属组：" + currentNav);
+        element.tabDelete(currentNav, id);//删除
     }
-    let tabDeleteAll = function (ids) {
+    let tabDeleteAll = function (ids, currentNav) {
         $.each(ids, function (i, item) {
-            element.tabDelete("main-tab", item);
+            element.tabDelete(currentNav, item);
         })
     }
     /**
@@ -161,6 +173,6 @@ layui.define(['element'], function (exports) {
         return false;
     }
 
-    let rightmenu = new RIGHTMENUMOD();
-    exports(MOD_NAME, rightmenu);
+    let rightmenuObj = new RIGHTMENUMOD();
+    exports(MOD_NAME, rightmenuObj);
 })

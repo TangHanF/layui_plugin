@@ -12,39 +12,11 @@
 </head>
 <body>
 
-
-<!-- 内容主体区域 -->
-<div class="nav-body">
-
-    <div>
-        <fieldset class="layui-elem-field">
-            <legend>默认右键菜单弹出项有</legend>
-            <div class="layui-field-box">
-                <blockquote class="layui-elem-quote">
-                    关闭当前（closethis）、关闭所有（closeall）、关闭其它（closeothers）、关闭左侧所有（closeleft）、关闭右侧所有（closeright）、刷新当前页（refresh）
-                </blockquote>
-            </div>
-        </fieldset>
-        <fieldset class="layui-elem-field">
-            <legend>HTML页面模板</legend>
-            <div class="layui-field-box">
-                Tab选项卡使用官方提供模板： <a href="https://www.layui.com/doc/element/tab.html">https://www.layui.com/doc/element/tab.html</a>
-                然后注意：
-                <ul>
-                    <li>1、使用&lt;div class=&quot;nav-body&quot;&gt;&lt;/div&gt;对“layui-tab”选项卡进行包裹。</li>
-                    <li>2、为class为“layui-tab”的div加入：lay-filter="main-tab"。</li>
-                    <li>3、为各个选项卡加入“lay-id”属性进行唯一标识。</li>
-                </ul>
-                其它内容自行处理即可！
-            </div>
-        </fieldset>
-    </div>
-
-
-    <h1>效果演示</h1>
+<div id="nav1">
     <!-- 顶部切换卡 -->
-    <div class="layui-tab" lay-filter="main-tab">
-        <ul class="layui-tab-title">
+    <!--ul的id要和lay-filter一致-->
+    <div class="layui-tab" lay-filter="main_tab1">
+        <ul id="main_tab1" class="layui-tab-title">
             <li lay-id="0" class="layui-this">网站设置</li>
             <li lay-id="1">用户管理</li>
             <li lay-id="2">权限分配</li>
@@ -61,25 +33,75 @@
     </div>
 </div>
 
+<div id="nav2">
+    <!-- 顶部切换卡 -->
+    <div class="layui-tab" lay-filter="main_tab2">
+        <ul id="main_tab2" class="layui-tab-title">
+            <li lay-id="11" class="layui-this">网站设置1</li>
+            <li lay-id="12">用户管理1</li>
+            <li lay-id="21">权限分配1</li>
+            <li lay-id="31">商品管理1</li>
+            <li lay-id="41">订单管理1</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">内容1</div>
+            <div class="layui-tab-item">内容2</div>
+            <div class="layui-tab-item">内容3</div>
+            <div class="layui-tab-item">内容4</div>
+            <div class="layui-tab-item">内容5</div>
+        </div>
+    </div>
+</div>
+
 <script>
     layui.config({
         base: 'module/',
-    }).use(['element', 'rightmenu'], function () {
+    }).use([  'rightmenu'], function () {
         let element = layui.element;
         let rightmenu_ = layui.rightmenu;
 
         // 默认方式渲染全部：关闭当前（closethis）、关闭所有（closeall）、关闭其它（closeothers）、关闭左侧所有（closeleft）、关闭右侧所有（closeright）、刷新当前页（refresh）
-        rightmenu_.render();
+        rightmenu_.render({
+            container: '#nav1',
+            filter: 'main_tab1',
+        });
 
         // 默认渲染部分弹出项
-        // rightmenu_.render({
-        //     navArr: [
-        //         {dataType: 'closethis', title: '关闭当前'},
-        //         {dataType: 'closeall', title: '关闭所有'},
-        //         {dataType: 'closeothers', title: '关闭其它'},
-        //     ]
-        // })
+        rightmenu_.render({
+            container: '#nav2',
+            filter: 'main_tab2',
+            // navArr：对象数组，每个对象包含dataType、title、method属性
+            navArr: [
+                //自定义菜单项，无需定义dataType属性，只需title和method（自定义触发事件）属性即可
+                {
+                    title: "测试", dataType: 'test'
+                }, {
+                    title: "测试2", dataType: 'test2'
+                },
+                {dataType: 'closethis', title: '关闭当前'},
+                {dataType: 'closeall', title: '关闭所有'},
+                {dataType: 'closeothers', title: '关闭其它'},
 
+
+            ],
+            registMethod: {'test': test, 'test2': test2}
+        })
+
+        function test(id, title,currentNavGroup, dom) {
+            // debugger
+            changeCurrentTabContent(currentNavGroup,"测试触发,触发的ID：" + id + "，标题：" + title);
+            console.log("测试触发,触发的ID：" + id + "，标题：" + title);
+        }
+
+        function test2(id, title, dom) {
+            changeCurrentTabContent(currentNavGroup,"测试触发,触发的ID：" + id + "，标题：" + title);
+            console.log("测试触发,触发的ID：" + id + "，标题：" + title);
+        }
+
+        function changeCurrentTabContent(currentNavGroup,content) {
+            $(currentNavGroup+" div[class='layui-tab-item layui-show']").html(content);
+
+        }
     });
 </script>
 
