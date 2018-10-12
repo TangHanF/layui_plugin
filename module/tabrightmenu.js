@@ -2,7 +2,7 @@ layui.define(['element'], function (exports) {
     let element = layui.element;
     const $ = layui.jquery;
 
-    let MOD_NAME = 'rightmenu';
+    let MOD_NAME = 'tabrightmenu';
     let RIGHTMENUMOD = function () {
         this.v = '1.0.0';
         this.author = 'TangHanF';
