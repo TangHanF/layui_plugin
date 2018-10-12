@@ -86,9 +86,9 @@ Tab选项卡使用官方提供模板： https://www.layui.com/doc/element/tab.ht
 ```javascript
 layui.config({
     base: 'module/',
-}).use(['element', 'rightmenu'], function () {
+}).use(['element', 'tabrightmenu'], function () {
     let element = layui.element;
-    let rightmenu_ = layui.rightmenu;
+    let rightmenu_ = layui.tabrightmenu;
 
     // 默认方式渲染全部：关闭当前（closethis）、关闭所有（closeall）、关闭其它（closeothers）、关闭左侧所有（closeleft）、关闭右侧所有（closeright）、刷新当前页（refresh）
     rightmenu_.render({
@@ -103,9 +103,9 @@ layui.config({
 ```javascript
 layui.config({
     base: 'module/',
-}).use(['element', 'rightmenu'], function () {
+}).use(['element', 'tabrightmenu'], function () {
     let element = layui.element;
-    let rightmenu_ = layui.rightmenu;
+    let rightmenu_ = layui.tabrightmenu;
 
     // 默认方式渲染全部：关闭当前（closethis）、关闭所有（closeall）、关闭其它（closeothers）、关闭左侧所有（closeleft）、关闭右侧所有（closeright）、刷新当前页（refresh）
     rightmenu_.render({
@@ -198,9 +198,9 @@ layui.config({
 ```javascript
 layui.config({
     base: 'module/',
-}).use(['rightmenu'], function () {
+}).use(['tabrightmenu'], function () {
     let element = layui.element;
-    let rightmenu_ = layui.rightmenu;
+    let rightmenu_ = layui.tabrightmenu;
 
     // 默认方式渲染全部：关闭当前（closethis）、关闭所有（closeall）、关闭其它（closeothers）、关闭左侧所有（closeleft）、关闭右侧所有（closeright）、刷新当前页（refresh）
     // 渲染nav1
