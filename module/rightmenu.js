@@ -46,12 +46,12 @@ layui.define(['element'], function (exports) {
         this.filter = opt.filter;
 
         let defaultNavArr = [
-            {dataType: 'closethis', title: '关闭当前'},
-            {dataType: 'closeall', title: '关闭所有'},
-            {dataType: 'closeothers', title: '关闭其它'},
-            {dataType: 'closeleft', title: '关闭左侧所有'},
-            {dataType: 'closeright', title: '关闭右侧所有'},
-            {dataType: 'refresh', title: '刷新当前页'},
+            {eventName: 'closethis', title: '关闭当前'},
+            {eventName: 'closeall', title: '关闭所有'},
+            {eventName: 'closeothers', title: '关闭其它'},
+            {eventName: 'closeleft', title: '关闭左侧所有'},
+            {eventName: 'closeright', title: '关闭右侧所有'},
+            {eventName: 'refresh', title: '刷新当前页'},
         ];
         opt = opt || {};
         opt.navArr = opt.navArr || defaultNavArr;
@@ -69,9 +69,9 @@ layui.define(['element'], function (exports) {
         $("<style></style>").text(createStyle(rightMenuConfig.filter)).appendTo($("head"));
         let li = '';
         $.each(rightMenuConfig.navArr, function (index, conf) {
-            // li += '<li data-type="' + conf.dataType + '"><i class="layui-icon layui-icon-face-smile"></i> ' + conf.title + '</li>';
-            li += '<li data-type="{dataType}"><i class="layui-icon {icon}"></i>{title}</li>'
-                .format({dataType:conf.dataType,icon:conf.icon?conf.icon:"",title:conf.title});
+            // li += '<li data-type="' + conf.eventName + '"><i class="layui-icon layui-icon-face-smile"></i> ' + conf.title + '</li>';
+            li += '<li data-type="{eventName}"><i class="layui-icon {icon}"></i>{title}</li>'
+                .format({eventName:conf.eventName,icon:conf.icon?conf.icon:"",title:conf.title});
         })
         let tmpHtml = '<ul class="{className}">{liStr} </ul>'.format({liStr: li, className: rightMenuConfig.filter})
         $(rightMenuConfig.container).after(tmpHtml);

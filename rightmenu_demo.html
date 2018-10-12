@@ -63,32 +63,34 @@
         let rightmenu_ = layui.rightmenu;
 
         // 默认方式渲染全部：关闭当前（closethis）、关闭所有（closeall）、关闭其它（closeothers）、关闭左侧所有（closeleft）、关闭右侧所有（closeright）、刷新当前页（refresh）
+        // 渲染nav1
         rightmenu_.render({
             container: '#nav1',
             filter: 'main_tab1',
         });
 
-        // 默认渲染部分弹出项
+        // 渲染nav2，渲染默认部分弹出项+自定义弹出项
         rightmenu_.render({
             container: '#nav2',
             filter: 'main_tab2',
             // navArr：对象数组，每个对象包含dataType、title、method属性
             navArr: [
-                {dataType: 'closethis', title: '关闭当前', icon: 'layui-icon-close'},
-                {dataType: 'closeall', title: '关闭所有'},
-                {dataType: 'closeothers', title: '关闭其它'},
+                {eventName: 'closethis', title: '关闭当前', icon: 'layui-icon-close'},
+                {eventName: 'closeall', title: '关闭所有'},
+                {eventName: 'closeothers', title: '关闭其它'},
                 //自定义菜单项，此时dataType属性表示自定义事件
-                {title: "测试", dataType: 'test'},
-                {title: "测试2", dataType: 'test2'},
+                {title: "测试", eventName: 'test'},
+                {title: "测试2", eventName: 'test2'},
             ],
-            registMethod: {'test': test, 'test2': test2}
+            // 注册自定义事件
+            registMethod: {'test': testMethod, 'test2': test2Method}
         })
 
-        function test(id, title, currentNavGroup, dom) {
+        function testMethod(id, title, currentNavGroup, dom) {
             changeCurrentTabContent(currentNavGroup, "[测试]触发,触发的ID：" + id + "，标题：" + title);
         }
 
-        function test2(id, title, currentNavGroup, dom) {
+        function test2Method(id, title, currentNavGroup, dom) {
             changeCurrentTabContent(currentNavGroup, "[测试2]触发,触发的ID：" + id + "，标题：" + title);
         }
 
