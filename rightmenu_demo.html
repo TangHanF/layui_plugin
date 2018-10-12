@@ -11,7 +11,7 @@
 
 </head>
 <body>
-
+<h1>选项卡1</h1>
 <div id="nav1">
     <!-- 顶部切换卡 -->
     <!--ul的id要和lay-filter一致-->
@@ -24,31 +24,33 @@
             <li lay-id="4">订单管理</li>
         </ul>
         <div class="layui-tab-content">
-            <div class="layui-tab-item layui-show">内容1</div>
-            <div class="layui-tab-item">内容2</div>
-            <div class="layui-tab-item">内容3</div>
-            <div class="layui-tab-item">内容4</div>
-            <div class="layui-tab-item">内容5</div>
+            <div class="layui-tab-item layui-show">这是 网站设置 内容</div>
+            <div class="layui-tab-item">这是 用户管理 内容</div>
+            <div class="layui-tab-item">这是 权限分配 内容</div>
+            <div class="layui-tab-item">这是 商品管理 内容</div>
+            <div class="layui-tab-item">这是 订单管理 内容</div>
         </div>
     </div>
 </div>
 
+
+<h1>选项卡2</h1>
 <div id="nav2">
     <!-- 顶部切换卡 -->
     <div class="layui-tab" lay-filter="main_tab2">
         <ul id="main_tab2" class="layui-tab-title">
-            <li lay-id="11" class="layui-this">网站设置1</li>
-            <li lay-id="12">用户管理1</li>
-            <li lay-id="21">权限分配1</li>
-            <li lay-id="31">商品管理1</li>
-            <li lay-id="41">订单管理1</li>
+            <li lay-id="11" class="layui-this">权限管理</li>
+            <li lay-id="12">机构管理</li>
+            <li lay-id="21">字典管理</li>
+            <li lay-id="31">用户管理</li>
+            <li lay-id="41">物流管理</li>
         </ul>
         <div class="layui-tab-content">
-            <div class="layui-tab-item layui-show">内容1</div>
-            <div class="layui-tab-item">内容2</div>
-            <div class="layui-tab-item">内容3</div>
-            <div class="layui-tab-item">内容4</div>
-            <div class="layui-tab-item">内容5</div>
+            <div class="layui-tab-item layui-show">这是 权限管理 内容</div>
+            <div class="layui-tab-item">这是 机构管理 内容</div>
+            <div class="layui-tab-item">这是 字典管理 内容</div>
+            <div class="layui-tab-item">这是 用户管理 内容</div>
+            <div class="layui-tab-item">这是 物流管理 内容</div>
         </div>
     </div>
 </div>
@@ -56,7 +58,7 @@
 <script>
     layui.config({
         base: 'module/',
-    }).use([  'rightmenu'], function () {
+    }).use(['rightmenu'], function () {
         let element = layui.element;
         let rightmenu_ = layui.rightmenu;
 
@@ -72,31 +74,26 @@
             filter: 'main_tab2',
             // navArr：对象数组，每个对象包含dataType、title、method属性
             navArr: [
-                //自定义菜单项，无需定义dataType属性，只需title和method（自定义触发事件）属性即可
-                {
-                    title: "测试", dataType: 'test'
-                }, {
-                    title: "测试2", dataType: 'test2'
-                },
-                {dataType: 'closethis', title: '关闭当前'},
+                {dataType: 'closethis', title: '关闭当前', icon: 'layui-icon-close'},
                 {dataType: 'closeall', title: '关闭所有'},
                 {dataType: 'closeothers', title: '关闭其它'},
-
-
+                //自定义菜单项，此时dataType属性表示自定义事件
+                {title: "测试", dataType: 'test'},
+                {title: "测试2", dataType: 'test2'},
             ],
             registMethod: {'test': test, 'test2': test2}
         })
 
-        function test(id, title,currentNavGroup, dom) {
-            changeCurrentTabContent(currentNavGroup,"[测试]触发,触发的ID：" + id + "，标题：" + title);
+        function test(id, title, currentNavGroup, dom) {
+            changeCurrentTabContent(currentNavGroup, "[测试]触发,触发的ID：" + id + "，标题：" + title);
         }
 
-        function test2(id, title,currentNavGroup, dom) {
-            changeCurrentTabContent(currentNavGroup,"[测试2]触发,触发的ID：" + id + "，标题：" + title);
+        function test2(id, title, currentNavGroup, dom) {
+            changeCurrentTabContent(currentNavGroup, "[测试2]触发,触发的ID：" + id + "，标题：" + title);
         }
 
-        function changeCurrentTabContent(currentNavGroup,content) {
-            $(currentNavGroup+" div[class='layui-tab-item layui-show']").html(content);
+        function changeCurrentTabContent(currentNavGroup, content) {
+            $(currentNavGroup + " div[class='layui-tab-item layui-show']").html(content);
 
         }
     });

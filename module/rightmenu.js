@@ -69,7 +69,9 @@ layui.define(['element'], function (exports) {
         $("<style></style>").text(createStyle(rightMenuConfig.filter)).appendTo($("head"));
         let li = '';
         $.each(rightMenuConfig.navArr, function (index, conf) {
-            li += '<li data-type="' + conf.dataType + '">' + conf.title + '</li>';
+            // li += '<li data-type="' + conf.dataType + '"><i class="layui-icon layui-icon-face-smile"></i> ' + conf.title + '</li>';
+            li += '<li data-type="{dataType}"><i class="layui-icon {icon}"></i>{title}</li>'
+                .format({dataType:conf.dataType,icon:conf.icon?conf.icon:"",title:conf.title});
         })
         let tmpHtml = '<ul class="{className}">{liStr} </ul>'.format({liStr: li, className: rightMenuConfig.filter})
         $(rightMenuConfig.container).after(tmpHtml);
@@ -147,7 +149,7 @@ layui.define(['element'], function (exports) {
                     break;
                 default:
                     let currentTitle = $("#" + rightMenuConfig.filter + ">li[class='layui-this']").text();
-                    rightMenuConfig.registMethod[$(this).attr("data-type")](currentActiveTabID, currentTitle,rightMenuConfig.container, $(this)[0]);
+                    rightMenuConfig.registMethod[$(this).attr("data-type")](currentActiveTabID, currentTitle, rightMenuConfig.container, $(this)[0]);
 
             }
             $('.rightmenu').hide();
