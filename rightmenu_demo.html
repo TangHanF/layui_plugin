@@ -56,48 +56,62 @@
 </div>
 
 <script>
-layui.config({
-    base: 'module/',
-}).use(['tabrightmenu'], function () {
-    let element = layui.element;
-    let rightmenu_ = layui.tabrightmenu;
+    layui.config({
+        base: 'module/',
+    }).use(['tabrightmenu'], function () {
+        let element = layui.element;
+        let rightmenu_ = layui.tabrightmenu;
 
-    // 默认方式渲染全部：关闭当前（closethis）、关闭所有（closeall）、关闭其它（closeothers）、关闭左侧所有（closeleft）、关闭右侧所有（closeright）、刷新当前页（refresh）
-    rightmenu_.render({
-        container: '#nav1',
-        filter: 'main_tab1',
+        // 默认方式渲染全部：关闭当前（closethis）、关闭所有（closeall）、关闭其它（closeothers）、关闭左侧所有（closeleft）、关闭右侧所有（closeright）、刷新当前页（refresh）
+        rightmenu_.render({
+            container: '#nav1',
+            filter: 'main_tab1',
+
+            // pinTabTitles和pintabIDs作用一样，可以二选一（建议）也可以都保留，只是便于开发使用考虑加入标题和ID形式进行两种方式的过滤
+            pinTabTitles: ['网站设置'],//表示标题为“网站设置”的标签为固定标签
+            pintabIDs: ['0', '1'],//表示id为“0”、"1"的标签为固定标签
+
+            width: 160,// 右键弹出框的宽度，一般100~110即可
+        });
+
+        // 默认渲染部分弹出项
+        rightmenu_.render({
+            container: '#nav2',
+            filter: 'main_tab2',
+            // navArr：对象数组，每个对象包含dataType、title、method属性
+            navArr: [
+                {eventName: 'closethis', title: '关闭当前', icon: 'layui-icon-close'},
+                {eventName: 'closeallbutpin', title: '关闭所有但固定'},
+                {eventName: 'closeothersbutpin', title: '关闭其它但固定'},
+                {eventName: 'line'},// 创建分割线
+
+                {eventName: 'closeall', title: '关闭所有'},
+                {eventName: 'closeothers', title: '关闭其它'},
+                {eventName: 'closeleftbutpin', title: '关闭左侧'},
+                {eventName: 'closerightbutpin', title: '关闭右侧'},
+                {eventName: 'line'},// 创建分割线
+
+                //自定义菜单项，此时dataType属性表示自定义事件
+                {title: "测试", eventName: 'test'},
+                {title: "测试2", eventName: 'test2'},
+            ],
+            // 注册自定义事件
+            registMethod: {'test': testMethod, 'test2': test2Method}
+        })
+
+        function testMethod(id, title, currentNavGroup, dom) {
+            changeCurrentTabContent(currentNavGroup, "[测试]触发,触发的ID：" + id + "，标题：" + title);
+        }
+
+        function test2Method(id, title, currentNavGroup, dom) {
+            changeCurrentTabContent(currentNavGroup, "[测试2]触发,触发的ID：" + id + "，标题：" + title);
+        }
+
+        function changeCurrentTabContent(currentNavGroup, content) {
+            $(currentNavGroup + " div[class='layui-tab-item layui-show']").html(content);
+
+        }
     });
-
-    // 默认渲染部分弹出项
-    rightmenu_.render({
-        container: '#nav2',
-        filter: 'main_tab2',
-        // navArr：对象数组，每个对象包含dataType、title、method属性
-        navArr: [
-            {eventName: 'closethis', title: '关闭当前', icon: 'layui-icon-close'},
-            {eventName: 'closeall', title: '关闭所有'},
-            {eventName: 'closeothers', title: '关闭其它'},
-            //自定义菜单项，此时dataType属性表示自定义事件
-            {title: "测试", eventName: 'test'},
-            {title: "测试2", eventName: 'test2'},
-        ],
-        // 注册自定义事件
-        registMethod: {'test': testMethod, 'test2': test2Method}
-    })
-
-    function testMethod(id, title, currentNavGroup, dom) {
-        changeCurrentTabContent(currentNavGroup, "[测试]触发,触发的ID：" + id + "，标题：" + title);
-    }
-
-    function test2Method(id, title, currentNavGroup, dom) {
-        changeCurrentTabContent(currentNavGroup, "[测试2]触发,触发的ID：" + id + "，标题：" + title);
-    }
-
-    function changeCurrentTabContent(currentNavGroup, content) {
-        $(currentNavGroup + " div[class='layui-tab-item layui-show']").html(content);
-
-    }
-});
 </script>
 
 </body>
