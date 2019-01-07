@@ -15,7 +15,7 @@ layui.define(['element'], function (exports) {
         if (arguments.length == 0) return this;
         var param = arguments[0];
         var s = this;
-        if (typeof(param) == 'object') {
+        if (typeof (param) == 'object') {
             for (var key in param) s = s.replace(new RegExp("\\{" + key + "\\}", "g"), param[key]);
             return s;
         } else {
@@ -43,6 +43,7 @@ layui.define(['element'], function (exports) {
             return;
         }
         this.filter = opt.filter;
+        this.isClickMidCloseTab = opt.isClickMidCloseTab || false;
         this.width = opt.width ? opt.width : 110;// 右键弹出框的宽度，一般100~110即可
 
         // pinTabTitles和pintabIDs作用一样，只是便于开发使用考虑加入标题和ID形式进行两种方式的过滤
@@ -60,7 +61,39 @@ layui.define(['element'], function (exports) {
         opt = opt || {};
         opt.navArr = opt.navArr || defaultNavArr;
         CreateRightMenu(opt);
+        registClickMidCloseTab(this.isClickMidCloseTab,opt);
     };
+
+
+    /**
+     * 注册点击鼠标中间关闭选项卡事件
+     * @param isClose
+     * @param rightMenuConfig
+     */
+    function registClickMidCloseTab(isClose,rightMenuConfig) {
+        if (!isClose) {
+            return;
+        }
+
+        $("#" + rightmenuObj.filter).on('mousedown', 'li', function (e) {
+            currentActiveTabID = $(e.target).attr('lay-id'); // 获取当前激活的选项卡ID,当前ID改为右键菜单弹出时就获取
+            currentActiveTabTitle = $.trim($(e.target).text()); //获取当前激活选项卡的标题
+            if (rightMenuConfig.pinTabTitles && rightMenuConfig.pinTabTitles.indexOf(currentActiveTabTitle) != -1 || currentActiveTabTitle == undefined) { //特殊ID，弹出默认的右键菜单
+                return true;
+            }
+            if (rightMenuConfig.pintabIDs && rightMenuConfig.pintabIDs.indexOf(currentActiveTabID) != -1 || currentActiveTabID == undefined) { //特殊ID，弹出默认的右键菜单
+                return true;
+            }
+            if (e.which != 2) {
+                return true;
+            }
+            //鼠标中键关闭指定标签页
+            element.tabDelete(rightMenuConfig.filter, currentActiveTabID);
+            //隐藏菜单(如果有)
+            $("." + rightMenuConfig.filter).hide();
+            return false;
+        });
+    }
 
 
     /**
@@ -136,8 +169,7 @@ layui.define(['element'], function (exports) {
                 if (rightMenuConfig.pinTabTitles == undefined || rightMenuConfig.pintabIDs == undefined) {
                     allTabIDArrButPin[idIndexButPin] = id;
                     idIndexButPin++;
-                }
-                else if ((rightMenuConfig.pinTabTitles && rightMenuConfig.pinTabTitles.indexOf(title) == -1) &&
+                } else if ((rightMenuConfig.pinTabTitles && rightMenuConfig.pinTabTitles.indexOf(title) == -1) &&
                     ((rightMenuConfig.pintabIDs && rightMenuConfig.pintabIDs.indexOf(id) == -1) || id == undefined))  //去除特殊ID
                 {
                     allTabIDArrButPin[idIndexButPin] = id;
