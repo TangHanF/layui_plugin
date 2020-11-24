@@ -44,7 +44,7 @@ layui.define(['element'], function (exports) {
         }
         this.filter = opt.filter;
         this.isClickMidCloseTab = opt.isClickMidCloseTab || false;
-        this.width = opt.width ? opt.width : 110;// 右键弹出框的宽度，一般100~110即可
+        this.width = opt.width = opt.width ? opt.width : 110;// 右键弹出框的宽度，一般100~110即可
 
         // pinTabTitles和pintabIDs作用一样，只是便于开发使用考虑加入标题和ID形式进行两种方式的过滤
         this.pinTabTitles = opt.pinTabTitles;//固定标签的标题集合
@@ -144,7 +144,7 @@ layui.define(['element'], function (exports) {
             var popupmenu = $("." + rightMenuConfig.filter);
             var leftValue = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;
             var topValue = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
-            popupmenu.css({left: leftValue, top: topValue}).show();
+            popupmenu.css({left: leftValue, top: topValue, position: 'fixed'}).show();
             return false;
         });
 
