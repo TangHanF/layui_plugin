@@ -5,7 +5,7 @@ layui.define(['element'], function (exports) {
     var currentActiveTabTitle = undefined;
     var MOD_NAME = 'tabrightmenu';
     var RIGHTMENUMOD = function () {
-        this.v = '1.0.1';
+        this.v = '1.0.2';
         this.author = 'TangHanF';
         this.email = 'guofu_gh@163.com';
         this.filter = '';//Tab选项卡的事件过滤
