@@ -24,9 +24,10 @@ layui.define(['element'], function (exports) {
         }
     }
 
-    function createStyle(ulClassName, width) {
-        var style = '.{name} {position: absolute;width: {width_}px;z-index: 9999;display: none;background-color: #fff;padding: 2px;color: #333;border: 1px solid #eee;border-radius: 2px;cursor: pointer;}.{name} li {text-align: center;display: block;height: 30px;line-height: 32px;}.{name} li:hover {background-color: #666;color: #fff;}'
-            .format({name: ulClassName, width_: width});
+    function createStyle(ulClassName, width,bgColor) {
+        if(!bgColor) bgColor='#fff';
+        var style = '.{name} {position: absolute;width: {width_}px;z-index: 9999;display: none;background-color: {bgColor_};padding: 2px;color: #333;border: 1px solid #eee;border-radius: 2px;cursor: pointer;}.{name} li {text-align: center;display: block;height: 30px;line-height: 32px;}.{name} li:hover {background-color: #666;color: #fff;}'
+            .format({name: ulClassName, width_: width,bgColor_:bgColor});
         return style;
     }
 
@@ -103,7 +104,7 @@ layui.define(['element'], function (exports) {
      */
     function CreateRightMenu(rightMenuConfig) {
         // 使用"filter"属性作为css样式名称
-        $("<style></style>").text(createStyle(rightMenuConfig.filter, rightMenuConfig.width)).appendTo($("head"));
+        $("<style></style>").text(createStyle(rightMenuConfig.filter, rightMenuConfig.width,rightMenuConfig.bgColor)).appendTo($("head"));
         var li = '';
         $.each(rightMenuConfig.navArr, function (index, conf) {
             if (conf.eventName === 'line')
@@ -142,11 +143,22 @@ layui.define(['element'], function (exports) {
                 return true;
             }
             var popupmenu = $("." + rightMenuConfig.filter);
-            var leftValue = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;
-            var topValue = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
+            var leftValue ;// ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;
+            var topValue ;// ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
+
+            if (rightMenuConfig.position === 'down') {
+                leftValue = $(e.target).offset().left;
+                topValue = $(e.target).offset().top + $(e.target)[0].clientHeight;
+            } else {
+                leftValue = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;
+                topValue = ($(document).height() - e.clientY) < popupmenu.height() ? (e.clientY - popupmenu.height()) : e.clientY;
+            }
+
             popupmenu.css({left: leftValue, top: topValue, position: 'fixed'}).show();
             return false;
         });
+
+
 
         // 点击空白处隐藏弹出菜单
         $(document).click(function (event) {

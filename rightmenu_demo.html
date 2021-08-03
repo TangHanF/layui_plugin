@@ -24,11 +24,11 @@
             <li lay-id="4">订单管理</li>
         </ul>
         <div class="layui-tab-content">
-            <div class="layui-tab-item layui-show">这是 网站设置 内容</div>
-            <div class="layui-tab-item">这是 用户管理 内容</div>
-            <div class="layui-tab-item">这是 权限分配 内容</div>
-            <div class="layui-tab-item">这是 商品管理 内容</div>
-            <div class="layui-tab-item">这是 订单管理 内容</div>
+            <div class="layui-tab-item layui-show">这是 网站设置 内容,未指定右键菜单情况</div>
+            <div class="layui-tab-item">这是 用户管理 内容,未指定右键菜单情况</div>
+            <div class="layui-tab-item">这是 权限分配 内容,指定右键菜单且弹出位置为relative模式情况</div>
+            <div class="layui-tab-item">这是 商品管理 内容,指定右键菜单且弹出位置为relative模式情况</div>
+            <div class="layui-tab-item">这是 订单管理 内容,指定右键菜单且弹出位置为relative模式情况</div>
         </div>
     </div>
 </div>
@@ -46,11 +46,11 @@
             <li lay-id="41">物流管理</li>
         </ul>
         <div class="layui-tab-content">
-            <div class="layui-tab-item layui-show">这是 权限管理 内容</div>
-            <div class="layui-tab-item">这是 机构管理 内容</div>
-            <div class="layui-tab-item">这是 字典管理 内容</div>
-            <div class="layui-tab-item">这是 用户管理 内容</div>
-            <div class="layui-tab-item">这是 物流管理 内容</div>
+            <div class="layui-tab-item layui-show">这是 权限管理 内容,指定右键菜单且弹出位置为下部</div>
+            <div class="layui-tab-item">这是 机构管理 内容,指定右键菜单且弹出位置为下部</div>
+            <div class="layui-tab-item">这是 字典管理 内容,指定右键菜单且弹出位置为下部</div>
+            <div class="layui-tab-item">这是 用户管理 内容,指定右键菜单且弹出位置为下部</div>
+            <div class="layui-tab-item">这是 物流管理 内容,指定右键菜单且弹出位置为下部</div>
         </div>
     </div>
 </div>
@@ -66,7 +66,8 @@
         rightmenu_.render({
             container: '#nav1',
             filter: 'main_tab1',
-
+            position: 'relative',// 弹出菜单位置,取值:down relative
+            bgColor:'#5fb8788c',//右键弹出菜单背景颜色,若不指定,则默认为:#fff
             // pinTabTitles和pintabIDs作用一样，可以二选一（建议）也可以都保留，只是便于开发使用考虑加入标题和ID形式进行两种方式的过滤
             pinTabTitles: ['网站设置'],//表示标题为“网站设置”的标签为固定标签
             pintabIDs: ['0', '1'],//表示id为“0”、"1"的标签为固定标签
@@ -78,6 +79,7 @@
         rightmenu_.render({
             container: '#nav2',
             filter: 'main_tab2',
+            position: 'down',// 弹出菜单位置,取值:down relative
             // navArr：对象数组，每个对象包含dataType、title、method属性
             navArr: [
                 {eventName: 'closethis', title: '关闭当前', icon: 'layui-icon-close'},
